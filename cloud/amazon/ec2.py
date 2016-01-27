@@ -755,7 +755,7 @@ def create_block_device(module, ec2, volume):
             if int(volume['iops']) > MAX_IOPS_TO_SIZE_RATIO * size:
                 module.fail_json(msg = 'IOPS must be at most %d times greater than size' % MAX_IOPS_TO_SIZE_RATIO)
         if 'encrypted' in volume:
-            module.fail_json(msg = 'You can not set encyrption when creating a volume from a snapshot')
+            module.fail_json(msg = 'You can not set encryption when creating a volume from a snapshot')
     if 'ephemeral' in volume:
         if 'snapshot' in volume:
             module.fail_json(msg = 'Cannot set both ephemeral and snapshot')
