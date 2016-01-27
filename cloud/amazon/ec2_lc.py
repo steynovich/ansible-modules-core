@@ -167,6 +167,8 @@ def create_block_device(module, volume):
     if 'snapshot' in volume:
         if 'device_type' in volume and volume.get('device_type') == 'io1' and 'iops' not in volume:
             module.fail_json(msg='io1 volumes must have an iops value set')
+        if 'encrypted' in volume:
+            module.fail_json(msg = 'You can not set encryption when creating a volume from a snapshot')
     if 'ephemeral' in volume:
         if 'snapshot' in volume:
             module.fail_json(msg='Cannot set both ephemeral and snapshot')
@@ -175,7 +177,8 @@ def create_block_device(module, volume):
                            size=volume.get('volume_size'),
                            volume_type=volume.get('device_type'),
                            delete_on_termination=volume.get('delete_on_termination', False),
-                           iops=volume.get('iops'))
+                           iops=volume.get('iops'),
+                           encrypted=volume.get('encrypted', None))
 
 
 def create_launch_config(connection, module):
